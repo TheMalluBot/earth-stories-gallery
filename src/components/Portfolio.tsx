@@ -53,6 +53,30 @@ const portfolioItems = [
     category: 'portraits',
     image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
   },
+  {
+    id: 9,
+    title: 'Corporate Event',
+    category: 'events',
+    image: 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    id: 10,
+    title: 'Wedding Celebration',
+    category: 'events',
+    image: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    id: 11,
+    title: 'Music Festival',
+    category: 'events',
+    image: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    id: 12,
+    title: 'Conference',
+    category: 'events',
+    image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=80',
+  },
 ];
 
 const Portfolio = () => {
