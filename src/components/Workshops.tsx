@@ -62,15 +62,15 @@ const Workshops = () => {
     <section id="workshops" className="py-20">
       <div className="container px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4">Photography Workshops</h2>
+          <h2 className="section-heading text-3xl md:text-4xl font-serif font-bold mb-4">Photography Workshops</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Join me on guided photography adventures to enhance your skills and capture stunning images
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        <div className="workshops-grid grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
           {workshops.map((workshop) => (
-            <Card key={workshop.id} className="overflow-hidden h-full flex flex-col">
+            <Card key={workshop.id} className="workshop-card overflow-hidden h-full flex flex-col">
               <div className="h-48 overflow-hidden">
                 <img 
                   src={workshop.image} 
@@ -116,11 +116,11 @@ const Workshops = () => {
           ))}
         </div>
 
-        <div className="bg-muted/30 rounded-lg p-8 mb-12">
-          <h3 className="text-2xl font-serif font-bold mb-6 text-center">What Participants Say</h3>
+        <div className="testimonials-container bg-muted/30 rounded-lg p-8 mb-12">
+          <h3 className="section-heading text-2xl font-serif font-bold mb-6 text-center">What Participants Say</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {testimonials.map((testimonial) => (
-              <div key={testimonial.id} className="text-center">
+              <div key={testimonial.id} className="testimonial-item text-center">
                 <p className="italic text-muted-foreground mb-4">"{testimonial.quote}"</p>
                 <Separator className="mx-auto w-12 mb-4" />
                 <p className="font-semibold">{testimonial.author}</p>
@@ -131,11 +131,11 @@ const Workshops = () => {
         </div>
 
         <div className="text-center">
-          <h3 className="text-2xl font-serif font-bold mb-4">Ready to elevate your photography skills?</h3>
+          <h3 className="section-heading text-2xl font-serif font-bold mb-4">Ready to elevate your photography skills?</h3>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
             Join one of our upcoming workshops or request a custom session for personalized guidance.
           </p>
-          <Button size="lg">View All Workshops</Button>
+          <Button size="lg" className="contact-element">View All Workshops</Button>
         </div>
       </div>
     </section>

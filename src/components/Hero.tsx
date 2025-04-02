@@ -42,15 +42,15 @@ const Hero = () => {
 
       {/* Content */}
       <div className="container relative z-20 text-white text-center px-4">
-        <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold leading-tight animate-fade-in">
+        <h1 className="hero-title font-serif text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
           Capturing Earth's<br />Untold Stories
         </h1>
         
-        <p className="mt-6 text-lg md:text-xl text-white/90 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: '0.2s' }}>
+        <p className="hero-description mt-6 text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
           Professional nature photography that transports you to the heart of wilderness
         </p>
         
-        <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+        <div className="hero-buttons mt-10 flex flex-col sm:flex-row justify-center gap-4">
           <Button size="lg" className="text-base group relative overflow-hidden" asChild>
             <a href="#portfolio">
               <span className="relative z-10">View Portfolio</span>

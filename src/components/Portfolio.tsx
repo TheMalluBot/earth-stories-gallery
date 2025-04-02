@@ -62,7 +62,7 @@ const Portfolio = () => {
     <section id="portfolio" className="py-20 bg-muted/30">
       <div className="container px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4">Portfolio</h2>
+          <h2 className="section-heading text-3xl md:text-4xl font-serif font-bold mb-4">Portfolio</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             A curated selection of my finest photographs across various categories
           </p>
@@ -77,7 +77,7 @@ const Portfolio = () => {
           </TabsList>
 
           <TabsContent value="all" className="animate-fade-in">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="portfolio-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {portfolioItems.map((item) => (
                 <PortfolioItem 
                   key={item.id} 
@@ -90,7 +90,7 @@ const Portfolio = () => {
 
           {['nature', 'portraits', 'events'].map((category) => (
             <TabsContent key={category} value={category} className="animate-fade-in">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="portfolio-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {portfolioItems
                   .filter((item) => item.category === category)
                   .map((item) => (
@@ -142,7 +142,7 @@ const PortfolioItem = ({
   onClick: () => void 
 }) => {
   return (
-    <Card className="overflow-hidden group cursor-pointer hover:shadow-lg transition-all duration-300" onClick={onClick}>
+    <Card className="portfolio-item overflow-hidden group cursor-pointer hover:shadow-lg transition-all duration-300" onClick={onClick}>
       <CardContent className="p-0 relative">
         <div className="aspect-square overflow-hidden">
           <img 
