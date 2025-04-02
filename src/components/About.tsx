@@ -11,7 +11,7 @@ const About = () => {
             <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6">About the Photographer</h2>
             
             <p className="mb-4 text-muted-foreground">
-              Hello, I'm Alex Jordan, a professional nature and wildlife photographer with over 15 years of experience capturing Earth's most remarkable moments. My journey began with a simple point-and-shoot camera and a profound fascination with the natural world.
+              Hello, I'm Somak Banerjee, a professional nature and wildlife photographer with over 15 years of experience capturing Earth's most remarkable moments. My journey began with a simple point-and-shoot camera and a profound fascination with the natural world.
             </p>
             
             <p className="mb-6 text-muted-foreground">

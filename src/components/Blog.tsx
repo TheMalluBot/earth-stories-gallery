@@ -39,6 +39,42 @@ const blogPosts = [
     category: 'Editing Tips',
     image: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     readTime: '12 min read'
+  },
+  {
+    id: 5,
+    title: 'Wildlife Photography Ethics: Respect and Responsibility',
+    excerpt: 'Understanding the importance of ethical practices when photographing wild animals in their natural habitats.',
+    date: 'January 25, 2024',
+    category: 'Ethics',
+    image: 'https://images.unsplash.com/photo-1534535498441-29391bdc1981?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    readTime: '9 min read'
+  },
+  {
+    id: 6,
+    title: 'Capturing Bird Photography: Tips and Techniques',
+    excerpt: 'Expert advice for photographing birds in flight and creating stunning avian portraits.',
+    date: 'December 12, 2023',
+    category: 'Wildlife',
+    image: 'https://images.unsplash.com/photo-1621396828584-c1eed2e664ce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    readTime: '7 min read'
+  },
+  {
+    id: 7,
+    title: 'Night Sky Photography: Capturing the Milky Way',
+    excerpt: 'A complete guide to photographing celestial objects and creating breathtaking astro-landscapes.',
+    date: 'November 5, 2023',
+    category: 'Night Photography',
+    image: 'https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    readTime: '11 min read'
+  },
+  {
+    id: 8,
+    title: 'Photography in Extreme Weather Conditions',
+    excerpt: 'How to protect your gear and capture amazing images in rain, snow, extreme heat, and other challenging environments.',
+    date: 'October 19, 2023',
+    category: 'Field Techniques',
+    image: 'https://images.unsplash.com/photo-1520209759809-a9bcb6cb3241?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    readTime: '8 min read'
   }
 ];
 
