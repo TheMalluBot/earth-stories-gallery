@@ -1,8 +1,16 @@
 
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 const Hero = () => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
@@ -15,7 +23,22 @@ const Hero = () => {
       />
 
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black/30 z-10"></div>
+      <div className="absolute inset-0 bg-black/40 z-10"></div>
+
+      {/* Floating Elements */}
+      <div className="absolute inset-0 z-10 overflow-hidden">
+        {mounted && (
+          <>
+            <div className="floating-element w-24 h-24 md:w-32 md:h-32 rounded-full bg-primary/10 backdrop-blur-xl absolute top-1/4 left-1/4 animate-float-slow" />
+            <div className="floating-element w-16 h-16 md:w-24 md:h-24 rounded-full bg-orange-500/10 backdrop-blur-xl absolute top-3/4 left-1/3 animate-float" />
+            <div className="floating-element w-20 h-20 md:w-28 md:h-28 rounded-full bg-blue-500/10 backdrop-blur-xl absolute top-1/3 right-1/4 animate-float-reverse" />
+            <div className="floating-element w-12 h-12 md:w-20 md:h-20 rounded-full bg-green-500/10 backdrop-blur-xl absolute bottom-1/4 right-1/3 animate-float-slow-reverse" />
+            
+            <div className="floating-element w-32 h-32 md:w-40 md:h-40 rounded-md rotate-45 bg-purple-500/5 backdrop-blur-sm absolute -top-10 -left-10 animate-float-slow" />
+            <div className="floating-element w-36 h-36 md:w-48 md:h-48 rounded-md rotate-12 bg-yellow-500/5 backdrop-blur-sm absolute -bottom-20 -right-20 animate-float-reverse" />
+          </>
+        )}
+      </div>
 
       {/* Content */}
       <div className="container relative z-20 text-white text-center px-4">
@@ -28,13 +51,16 @@ const Hero = () => {
         </p>
         
         <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-          <Button size="lg" className="text-base" asChild>
+          <Button size="lg" className="text-base group relative overflow-hidden" asChild>
             <a href="#portfolio">
-              View Portfolio <ArrowRight className="ml-2 h-4 w-4" />
+              <span className="relative z-10">View Portfolio</span>
+              <span className="absolute inset-0 bg-white/20 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
+              <ArrowRight className="ml-2 h-4 w-4 relative z-10" />
             </a>
           </Button>
-          <Button size="lg" variant="outline" className="text-base bg-transparent border-white text-white hover:bg-white/10">
-            Book a Session
+          <Button size="lg" variant="outline" className="text-base bg-transparent border-white text-white hover:bg-white/10 group relative overflow-hidden">
+            <span className="relative z-10">Book a Session</span>
+            <span className="absolute inset-0 bg-white/10 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
           </Button>
         </div>
       </div>
