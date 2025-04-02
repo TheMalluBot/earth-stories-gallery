@@ -11,7 +11,7 @@ const About = () => {
             <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6">About the Photographer</h2>
             
             <p className="mb-4 text-muted-foreground">
-              Hello, I'm Somak Banerjee, a professional photographer with over 15 years of experience capturing Earth's most remarkable moments. My journey began with a simple point-and-shoot camera and a profound fascination with the natural world.
+              Hello, I'm Alex Jordan, a professional nature and wildlife photographer with over 15 years of experience capturing Earth's most remarkable moments. My journey began with a simple point-and-shoot camera and a profound fascination with the natural world.
             </p>
             
             <p className="mb-6 text-muted-foreground">
@@ -43,25 +43,25 @@ const About = () => {
           <div className="order-1 lg:order-2 grid grid-cols-2 gap-4">
             <div className="space-y-4">
               <img 
-                src="https://mir-s3-cdn-cf.behance.net/project_modules/fs/87cb2e108316407.5fbdf287c4ba3.jpg" 
-                alt="Somak Banerjee photography" 
+                src="https://images.unsplash.com/photo-1472396961693-142e6e269027?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                alt="Wildlife photography" 
                 className="rounded-lg w-full object-cover h-48 md:h-64"
               />
               <img 
-                src="https://mir-s3-cdn-cf.behance.net/project_modules/fs/f7c1f9108316407.5fbdf287c5429.jpg" 
-                alt="Somak Banerjee photography" 
+                src="https://images.unsplash.com/photo-1482938289607-e9573fc25ebb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                alt="Landscape photography" 
                 className="rounded-lg w-full object-cover h-64 md:h-80"
               />
             </div>
             <div className="space-y-4 mt-8">
               <img 
-                src="https://mir-s3-cdn-cf.behance.net/project_modules/fs/8d3b32108316407.5fbdf287c4577.jpg" 
-                alt="Somak Banerjee photography" 
+                src="https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                alt="Forest photography" 
                 className="rounded-lg w-full object-cover h-64 md:h-80"
               />
               <img 
-                src="https://mir-s3-cdn-cf.behance.net/project_modules/fs/de1f47108316407.5fbdf287c41ea.jpg" 
-                alt="Somak Banerjee photography" 
+                src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                alt="Mountain photography" 
                 className="rounded-lg w-full object-cover h-48 md:h-64"
               />
             </div>
