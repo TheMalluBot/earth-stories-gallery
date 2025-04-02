@@ -5,11 +5,11 @@ import { ArrowRight } from 'lucide-react';
 const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
+      {/* Background Image from Somak's Behance */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
         style={{ 
-          backgroundImage: 'url("/lovable-uploads/9aca5a7c-2d9a-49d3-b32d-7fd7b81f81be.png")',
+          backgroundImage: 'url("https://mir-s3-cdn-cf.behance.net/project_modules/fs/83dc3774248875.5c28a40dca2a5.jpg")',
           filter: 'brightness(0.7)'
         }}
       />
