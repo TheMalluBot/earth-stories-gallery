@@ -1,5 +1,5 @@
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Nav from '@/components/Nav';
 import Hero from '@/components/Hero';
 import Portfolio from '@/components/Portfolio';
@@ -18,35 +18,47 @@ declare global {
 }
 
 const Index = () => {
+  const gsapLoaded = useRef<boolean>(false);
+
   useEffect(() => {
-    // Wait for GSAP and ScrollTrigger to be available
-    const checkGSAP = () => {
-      if (window.gsap && window.ScrollTrigger) {
-        const { gsap, ScrollTrigger } = window;
-        
-        // Register ScrollTrigger plugin
-        gsap.registerPlugin(ScrollTrigger);
-        
-        // Initialize animations
-        initAnimations(gsap, ScrollTrigger);
-      } else {
-        // Check again in 100ms
-        setTimeout(checkGSAP, 100);
-      }
-    };
-    
-    checkGSAP();
-    
+    // Add the GSAP and ScrollTrigger scripts if they don't already exist
+    if (!document.getElementById('gsap-script')) {
+      const gsapScript = document.createElement('script');
+      gsapScript.id = 'gsap-script';
+      gsapScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js';
+      gsapScript.async = true;
+      document.body.appendChild(gsapScript);
+
+      const scrollTriggerScript = document.createElement('script');
+      scrollTriggerScript.id = 'scrolltrigger-script';
+      scrollTriggerScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js';
+      scrollTriggerScript.async = true;
+      document.body.appendChild(scrollTriggerScript);
+
+      scrollTriggerScript.onload = () => {
+        gsapLoaded.current = true;
+        initAnimations();
+      };
+    } else if (window.gsap && window.ScrollTrigger) {
+      gsapLoaded.current = true;
+      initAnimations();
+    }
+
+    // Clean up
     return () => {
-      // Clean up ScrollTrigger on unmount
       if (window.ScrollTrigger) {
         window.ScrollTrigger.getAll().forEach((trigger: any) => trigger.kill());
       }
     };
   }, []);
-  
-  // All animation setup
-  const initAnimations = (gsap: any, ScrollTrigger: any) => {
+
+  const initAnimations = () => {
+    const { gsap, ScrollTrigger } = window;
+    if (!gsap || !ScrollTrigger) return;
+
+    console.log("GSAP and ScrollTrigger initialized");
+    gsap.registerPlugin(ScrollTrigger);
+
     // Hero section animations
     gsap.from(".hero-title", {
       opacity: 0,
@@ -71,7 +83,7 @@ const Index = () => {
       ease: "power3.out"
     });
     
-    // Section heading animations
+    // Section headings animations
     gsap.utils.toArray(".section-heading").forEach((heading: any) => {
       gsap.from(heading, {
         opacity: 0,
@@ -81,9 +93,37 @@ const Index = () => {
         scrollTrigger: {
           trigger: heading,
           start: "top 85%",
-          toggleActions: "play none none none"
+          toggleActions: "play none none none",
+          markers: true // Remove this in production
         }
       });
+    });
+    
+    // Portfolio animations
+    gsap.from(".portfolio-subtitle", {
+      opacity: 0,
+      y: 30,
+      duration: 0.8,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: ".portfolio-subtitle",
+        start: "top 85%",
+        toggleActions: "play none none none",
+        markers: true // Remove this in production
+      }
+    });
+    
+    gsap.from(".portfolio-filters", {
+      opacity: 0,
+      y: 30,
+      duration: 0.8,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: ".portfolio-filters",
+        start: "top 85%",
+        toggleActions: "play none none none",
+        markers: true // Remove this in production
+      }
     });
     
     // Portfolio items (staggered)
@@ -96,7 +136,8 @@ const Index = () => {
       scrollTrigger: {
         trigger: ".portfolio-grid",
         start: "top 75%",
-        toggleActions: "play none none none"
+        toggleActions: "play none none none",
+        markers: true // Remove this in production
       }
     });
     
@@ -110,25 +151,25 @@ const Index = () => {
       scrollTrigger: {
         trigger: ".workshops-grid",
         start: "top 75%",
-        toggleActions: "play none none none"
-      }
-    });
-    
-    // Testimonials
-    gsap.from(".testimonial-item", {
-      opacity: 0,
-      y: 30,
-      duration: 0.7,
-      stagger: 0.15,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: ".testimonials-container",
-        start: "top 80%",
-        toggleActions: "play none none none"
+        toggleActions: "play none none none",
+        markers: true // Remove this in production
       }
     });
     
     // Blog posts
+    gsap.from(".blog-subtitle", {
+      opacity: 0,
+      y: 30,
+      duration: 0.8,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: ".blog-subtitle",
+        start: "top 85%",
+        toggleActions: "play none none none",
+        markers: true // Remove this in production
+      }
+    });
+    
     gsap.from(".blog-post", {
       opacity: 0,
       y: 40,
@@ -138,7 +179,8 @@ const Index = () => {
       scrollTrigger: {
         trigger: ".blog-grid",
         start: "top 75%",
-        toggleActions: "play none none none"
+        toggleActions: "play none none none",
+        markers: true // Remove this in production
       }
     });
     
@@ -151,7 +193,8 @@ const Index = () => {
       scrollTrigger: {
         trigger: "#about",
         start: "top 75%",
-        toggleActions: "play none none none"
+        toggleActions: "play none none none",
+        markers: true // Remove this in production
       }
     });
     
@@ -165,20 +208,48 @@ const Index = () => {
       scrollTrigger: {
         trigger: "#contact",
         start: "top 80%",
-        toggleActions: "play none none none"
+        toggleActions: "play none none none",
+        markers: true // Remove this in production
       }
     });
     
-    // Floating elements animation
-    gsap.to(".floating-element", {
-      y: "random(-20, 20)",
-      x: "random(-20, 20)",
-      rotation: "random(-10, 10)",
-      duration: "random(3, 6)",
-      ease: "sine.inOut",
-      repeat: -1,
-      yoyo: true,
-      stagger: 0.2
+    // Floating elements parallax effect
+    gsap.utils.toArray(".floating-element").forEach((element: any) => {
+      gsap.to(element, {
+        y: `random(-40, 40)`,
+        x: `random(-40, 40)`,
+        duration: "random(3, 8)",
+        ease: "sine.inOut",
+        repeat: -1,
+        yoyo: true,
+        scrollTrigger: {
+          trigger: "body",
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 1,
+        }
+      });
+    });
+    
+    // Additional parallax effects on scroll
+    gsap.to(".hero-title", {
+      y: 100,
+      scrollTrigger: {
+        trigger: "body",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 1,
+      }
+    });
+    
+    gsap.to(".hero-description", {
+      y: 150,
+      scrollTrigger: {
+        trigger: "body",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 1.5,
+      }
     });
   };
 
@@ -192,10 +263,6 @@ const Index = () => {
       <About />
       <Contact />
       <Footer />
-      
-      {/* GSAP CDN Scripts */}
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" async></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" async></script>
     </div>
   );
 };

@@ -62,14 +62,14 @@ const Portfolio = () => {
     <section id="portfolio" className="py-20 bg-muted/30">
       <div className="container px-4">
         <div className="text-center mb-12">
-          <h2 className="section-heading text-3xl md:text-4xl font-serif font-bold mb-4">Portfolio</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <h2 className="section-heading portfolio-title text-3xl md:text-4xl font-serif font-bold mb-4">Portfolio</h2>
+          <p className="portfolio-subtitle text-muted-foreground max-w-2xl mx-auto">
             A curated selection of my finest photographs across various categories
           </p>
         </div>
 
         <Tabs defaultValue="all" className="w-full">
-          <TabsList className="mx-auto mb-8 flex justify-center">
+          <TabsList className="portfolio-filters mx-auto mb-8 flex justify-center">
             <TabsTrigger value="all">All</TabsTrigger>
             <TabsTrigger value="nature">Nature</TabsTrigger>
             <TabsTrigger value="portraits">Portraits</TabsTrigger>

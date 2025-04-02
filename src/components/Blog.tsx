@@ -83,15 +83,15 @@ const Blog = () => {
     <section id="blog" className="py-20 bg-muted/30">
       <div className="container px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4">Learning Hub</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <h2 className="section-heading blog-title text-3xl md:text-4xl font-serif font-bold mb-4">Learning Hub</h2>
+          <p className="blog-subtitle text-muted-foreground max-w-2xl mx-auto">
             Discover tips, tutorials, and insights to enhance your photography skills
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+        <div className="blog-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
           {blogPosts.map((post) => (
-            <Card key={post.id} className="overflow-hidden h-full flex flex-col hover:shadow-lg transition-all duration-300">
+            <Card key={post.id} className="blog-post overflow-hidden h-full flex flex-col hover:shadow-lg transition-all duration-300">
               <div className="h-48 overflow-hidden">
                 <img 
                   src={post.image} 
