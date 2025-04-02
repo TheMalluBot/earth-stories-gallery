@@ -5,11 +5,11 @@ import { ArrowRight } from 'lucide-react';
 const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
+      {/* Background Image from Somak's Behance */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
         style={{ 
-          backgroundImage: 'url("https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80")',
+          backgroundImage: 'url("https://mir-s3-cdn-cf.behance.net/project_modules/fs/826e3a108316407.5fbdf287c5809.jpg")',
           filter: 'brightness(0.7)'
         }}
       />
@@ -20,11 +20,11 @@ const Hero = () => {
       {/* Content */}
       <div className="container relative z-20 text-white text-center px-4">
         <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold leading-tight animate-fade-in">
-          Capturing Earth's<br />Untold Stories
+          Somak Banerjee<br />Photography
         </h1>
         
         <p className="mt-6 text-lg md:text-xl text-white/90 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: '0.2s' }}>
-          Professional nature photography that transports you to the heart of wilderness
+          Professional photography that transports you to the heart of wilderness
         </p>
         
         <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4 animate-fade-in" style={{ animationDelay: '0.4s' }}>

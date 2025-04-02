@@ -34,7 +34,7 @@ const Nav = () => {
     )}>
       <div className="container flex justify-between items-center">
         <a href="#" className="font-serif text-xl md:text-2xl font-bold text-primary">
-          Nature's Lens
+          Somak Banerjee
         </a>
 
         {/* Desktop Menu */}
