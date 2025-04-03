@@ -90,7 +90,7 @@ const blogPosts = [
   },
   {
     id: 10,
-    title: 'Drone Photography: A Beginner\'s Guide',
+    title: "Drone Photography: A Beginner's Guide",
     excerpt: 'Everything you need to know about capturing stunning aerial images and videos with drones.',
     date: 'August 15, 2023',
     category: 'Aerial',
