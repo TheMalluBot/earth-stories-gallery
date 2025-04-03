@@ -83,6 +83,33 @@ const Index = () => {
       ease: "power3.out"
     });
     
+    // Hero background parallax effect
+    gsap.to(".hero-background", {
+      y: '30%',
+      ease: "none",
+      scrollTrigger: {
+        trigger: "#hero",
+        start: "top top",
+        end: "bottom top",
+        scrub: true,
+        markers: true // Remove this in production
+      }
+    });
+    
+    // Hero text fade out on scroll
+    gsap.to([".hero-title", ".hero-description", ".hero-buttons"], {
+      opacity: 0,
+      y: -50,
+      ease: "none",
+      scrollTrigger: {
+        trigger: "#hero",
+        start: "center top",
+        end: "bottom top",
+        scrub: 0.5,
+        markers: true // Remove this in production
+      }
+    });
+    
     // Section headings animations
     gsap.utils.toArray(".section-heading").forEach((heading: any) => {
       gsap.from(heading, {
@@ -126,19 +153,35 @@ const Index = () => {
       }
     });
     
-    // Portfolio items (staggered)
-    gsap.from(".portfolio-item", {
-      opacity: 0,
-      y: 40,
-      duration: 0.6,
-      stagger: 0.1,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: ".portfolio-grid",
-        start: "top 75%",
-        toggleActions: "play none none none",
-        markers: true // Remove this in production
-      }
+    // Portfolio items batch animation for better performance
+    ScrollTrigger.batch(".portfolio-item", {
+      batchMax: 4,
+      start: "top 85%",
+      markers: true, // Remove this in production
+      onEnter: batch => gsap.from(batch, {
+        opacity: 0,
+        y: 40,
+        scale: 0.98,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: "power2.out",
+        overwrite: true
+      })
+    });
+    
+    // Card image parallax
+    gsap.utils.toArray(".portfolio-item .card-image").forEach((img: any) => {
+      gsap.to(img, {
+        yPercent: -15,
+        ease: "none",
+        scrollTrigger: {
+          trigger: img.closest(".portfolio-item"),
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+          markers: false // Remove or set to false in production
+        }
+      });
     });
     
     // Workshop cards (staggered)

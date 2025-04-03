@@ -148,7 +148,7 @@ const PortfolioItem = ({
           <img 
             src={item.image} 
             alt={item.title} 
-            className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
+            className="card-image w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
           />
         </div>
         <div className={cn(
