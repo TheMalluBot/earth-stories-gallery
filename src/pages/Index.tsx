@@ -14,6 +14,7 @@ declare global {
   interface Window {
     gsap: any;
     ScrollTrigger: any;
+    SplitText: any;
   }
 }
 
@@ -58,6 +59,9 @@ const Index = () => {
 
     console.log("GSAP and ScrollTrigger initialized");
     gsap.registerPlugin(ScrollTrigger);
+
+    // Turn off default ScrollTrigger markers
+    ScrollTrigger.defaults({ markers: false });
 
     // Hero section animations
     gsap.from(".hero-title", {
@@ -123,80 +127,43 @@ const Index = () => {
       });
     });
     
-    // Portfolio animations
-    gsap.from(".portfolio-subtitle", {
-      opacity: 0,
-      y: 30,
-      duration: 0.8,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: ".portfolio-subtitle",
-        start: "top 85%",
-        toggleActions: "play none none none"
-      }
-    });
-    
-    gsap.from(".portfolio-filters", {
-      opacity: 0,
-      y: 30,
-      duration: 0.8,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: ".portfolio-filters",
-        start: "top 85%",
-        toggleActions: "play none none none"
-      }
-    });
-    
-    // Portfolio items batch animation for better performance
-    ScrollTrigger.batch(".portfolio-item", {
-      batchMax: 4,
-      start: "top 85%",
-      onEnter: batch => gsap.from(batch, {
-        opacity: 0,
-        y: 40,
-        scale: 0.98,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: "power2.out",
-        overwrite: true
-      })
-    });
-    
-    // Card image parallax - IMPROVED VERSION
-    gsap.utils.toArray(".portfolio-image-container").forEach((container: any) => {
-      const image = container.querySelector('img');
-      if (image) {
-        gsap.to(image, {
-          y: "-20%",
-          ease: "none",
-          scrollTrigger: {
-            trigger: container,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          }
-        });
-      }
-    });
-    
-    // Workshop cards (staggered)
-    gsap.from(".workshop-card", {
-      opacity: 0,
-      y: 40,
-      duration: 0.8,
-      stagger: 0.2,
-      ease: "power2.out",
+    // Workshop cards with 3D effect
+    const workshopsTl = gsap.timeline({
       scrollTrigger: {
         trigger: ".workshops-grid",
         start: "top 75%",
-        toggleActions: "play none none none"
+        end: "bottom 50%",
+        scrub: 0.5
       }
     });
     
-    // Add a subtle horizontal shift to workshop cards container
+    workshopsTl
+      .from(".workshops-grid", {
+        rotationY: 5,
+        transformPerspective: 1000,
+        duration: 1
+      });
+    
+    gsap.utils.toArray(".workshop-card").forEach((card: any, index: number) => {
+      gsap.from(card, {
+        opacity: 0,
+        y: 60,
+        rotationX: 10,
+        transformPerspective: 1000,
+        duration: 0.8,
+        delay: index * 0.1,
+        ease: "back.out(1.7)",
+        scrollTrigger: {
+          trigger: card,
+          start: "top 85%",
+          toggleActions: "play none none none"
+        }
+      });
+    });
+    
+    // Make workshop cards container shift horizontally
     gsap.to(".workshops-grid", {
-      xPercent: -3,
+      xPercent: -5,
       ease: "none",
       scrollTrigger: {
         trigger: ".workshops-grid",
@@ -206,29 +173,34 @@ const Index = () => {
       }
     });
     
-    // Blog carousel animations
-    gsap.from(".blog-subtitle", {
-      opacity: 0,
-      y: 30,
-      duration: 0.8,
-      ease: "power2.out",
+    // Blog carousel advanced animation
+    const blogTl = gsap.timeline({
       scrollTrigger: {
-        trigger: ".blog-subtitle",
-        start: "top 85%",
-        toggleActions: "play none none none"
+        trigger: "#blog",
+        start: "top 70%",
+        end: "center center", 
+        scrub: 0.5
       }
     });
     
-    // Blog posts with staggered reveal
-    gsap.from(".blog-carousel", {
-      opacity: 0,
-      x: -30,
-      duration: 0.8,
-      ease: "power2.out",
+    blogTl
+      .from(".blog-title", { opacity: 0, y: 30, duration: 0.5 })
+      .from(".blog-subtitle", { opacity: 0, y: 20, duration: 0.5 }, "-=0.3")
+      .from(".blog-carousel", { 
+        opacity: 0, 
+        x: -50,
+        duration: 0.8
+      }, "-=0.2");
+    
+    // Make blog posts scroll horizontally
+    gsap.to(".blog-carousel", {
+      x: "-10%",
+      ease: "none",
       scrollTrigger: {
         trigger: ".blog-carousel",
-        start: "top 85%",
-        toggleActions: "play none none none"
+        start: "top bottom",
+        end: "bottom top",
+        scrub: 1
       }
     });
     
@@ -259,10 +231,12 @@ const Index = () => {
           duration: 0.4
         }, "-=0.2");
       
-      // About images animation (improved)
-      gsap.utils.toArray(".about-image").forEach((img: any) => {
+      // About images animation with 3D effect
+      gsap.utils.toArray(".about-image").forEach((img: any, index: number) => {
         gsap.to(img, {
-          y: "-15%",
+          y: index % 2 === 0 ? "-15%" : "-20%",
+          rotationY: index % 2 === 0 ? 5 : -5,
+          rotationX: index % 2 === 0 ? 2 : -2,
           scale: 1.05,
           ease: "none",
           scrollTrigger: {
@@ -297,30 +271,31 @@ const Index = () => {
       });
       
       // Behind the Scenes text effect (revealing from nothing)
-      gsap.from(".behind-scenes-title", {
-        opacity: 0,
-        duration: 0.8,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: ".behind-scenes-title",
-          start: "top 85%",
-          toggleActions: "play none none none"
-        }
-      });
+      if (document.querySelector(".behind-scenes-title")) {
+        const behindScenesTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: ".behind-scenes-container",
+            start: "top 75%",
+            toggleActions: "play none none none"
+          }
+        });
+        
+        behindScenesTl
+          .from(".behind-scenes-title", {
+            opacity: 0,
+            scale: 0.8,
+            duration: 0.8,
+            ease: "back.out(1.7)"
+          })
+          .from(".behind-scenes-description", {
+            opacity: 0,
+            y: 20,
+            duration: 0.8,
+            ease: "power2.out"
+          }, "-=0.4");
+      }
       
-      gsap.from(".behind-scenes-description", {
-        opacity: 0,
-        duration: 0.8,
-        delay: 0.2,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: ".behind-scenes-description",
-          start: "top 85%",
-          toggleActions: "play none none none"
-        }
-      });
-      
-      // Creative text effect for Behind the Scenes cards
+      // Behind the Scenes cards with creative text effect
       gsap.utils.toArray(".behind-scenes-card").forEach((card: any, index: number) => {
         const title = card.querySelector(".behind-scenes-card-title");
         const text = card.querySelector(".behind-scenes-card-text");
@@ -335,22 +310,22 @@ const Index = () => {
         });
         
         // Text splitting effect (character by character)
-        if (title) {
-          const chars = title.textContent?.split('') || [];
-          title.innerHTML = '';
-          chars.forEach(char => {
-            const span = document.createElement('span');
-            span.textContent = char === ' ' ? ' ' : char;
-            span.style.display = char === ' ' ? 'inline' : 'inline-block';
-            span.style.opacity = '0';
-            title.appendChild(span);
-          });
+        if (title && window.SplitText) {
+          const split = new window.SplitText(title, { type: "chars" });
           
-          tl.to(title.childNodes, {
-            opacity: 1,
-            stagger: 0.03,
-            ease: "power2.out",
-            duration: 0.4
+          tl.from(split.chars, {
+            opacity: 0,
+            y: 20,
+            rotationX: -90,
+            stagger: 0.02,
+            duration: 0.5,
+            ease: "back.out(1.7)"
+          });
+        } else if (title) {
+          tl.from(title, {
+            opacity: 0,
+            y: 20,
+            duration: 0.5
           });
         }
         
@@ -400,6 +375,56 @@ const Index = () => {
           scrub: 1
         }
       });
+    });
+    
+    // Responsive animations using matchMedia
+    ScrollTrigger.matchMedia({
+      // Desktop animations
+      "(min-width: 992px)": function() {
+        // More complex animations for desktop
+        
+        // Portfolio grid staggered reveal
+        gsap.utils.toArray(".portfolio-grid").forEach((grid: any) => {
+          const cards = grid.querySelectorAll(".portfolio-item");
+          gsap.from(cards, {
+            opacity: 0,
+            y: 50,
+            scale: 0.9,
+            stagger: {
+              each: 0.1,
+              grid: [2, 4],
+              from: "center"
+            },
+            duration: 0.8,
+            ease: "back.out(1.7)",
+            scrollTrigger: {
+              trigger: grid,
+              start: "top 80%",
+              toggleActions: "play none none none"
+            }
+          });
+        });
+      },
+      
+      // Mobile animations
+      "(max-width: 991px)": function() {
+        // Simpler animations for mobile
+        
+        // Portfolio simple reveal
+        gsap.utils.toArray(".portfolio-item").forEach((card: any) => {
+          gsap.from(card, {
+            opacity: 0,
+            y: 30,
+            duration: 0.5,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 90%",
+              toggleActions: "play none none none"
+            }
+          });
+        });
+      }
     });
   };
 

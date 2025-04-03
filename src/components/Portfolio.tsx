@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -57,9 +57,187 @@ const portfolioItems = [
 
 const Portfolio = () => {
   const [selectedImage, setSelectedImage] = useState<null | { id: number; image: string; title: string }>(null);
+  const [activeTab, setActiveTab] = useState("all");
+  const portfolioRef = useRef<HTMLElement>(null);
+  const itemsRef = useRef<HTMLDivElement[]>([]);
+  const gsapLoaded = useRef<boolean>(false);
+  
+  // Function to initialize GSAP animations
+  const initAnimations = () => {
+    const { gsap, ScrollTrigger } = window;
+    if (!gsap || !ScrollTrigger || !portfolioRef.current) return;
+    
+    // Clear any existing ScrollTrigger instances for this section
+    ScrollTrigger.getAll().forEach(trigger => {
+      if (trigger.vars.trigger === portfolioRef.current || 
+          trigger.vars.trigger?.closest('#portfolio')) {
+        trigger.kill();
+      }
+    });
+    
+    // Animate the section title and subtitle with text reveal effect
+    const titleSplit = new window.SplitText(".portfolio-title", { type: "chars" });
+    const subtitleSplit = new window.SplitText(".portfolio-subtitle", { type: "chars" });
+    
+    gsap.from(titleSplit.chars, {
+      opacity: 0,
+      y: 20,
+      rotationX: -90,
+      stagger: 0.02,
+      duration: 0.8,
+      ease: "back.out(1.7)",
+      scrollTrigger: {
+        trigger: ".portfolio-title",
+        start: "top 85%",
+        toggleActions: "play none none none"
+      }
+    });
+    
+    gsap.from(subtitleSplit.chars, {
+      opacity: 0,
+      y: 20,
+      rotationX: -90,
+      stagger: 0.01,
+      duration: 0.8,
+      ease: "back.out(1.7)",
+      delay: 0.3,
+      scrollTrigger: {
+        trigger: ".portfolio-subtitle",
+        start: "top 85%",
+        toggleActions: "play none none none"
+      }
+    });
+    
+    // Animate filters with a bounce effect
+    gsap.from(".portfolio-filters", {
+      opacity: 0,
+      y: 30,
+      duration: 0.8,
+      ease: "elastic.out(1, 0.5)",
+      scrollTrigger: {
+        trigger: ".portfolio-filters",
+        start: "top 85%",
+        toggleActions: "play none none none"
+      }
+    });
+    
+    // Use ScrollTrigger.batch for efficient card animations
+    ScrollTrigger.batch(".portfolio-item", {
+      interval: 0.1,
+      batchMax: 4,
+      onEnter: batch => {
+        gsap.fromTo(batch, 
+          { 
+            opacity: 0, 
+            y: 60, 
+            scale: 0.9,
+            rotationY: 15
+          },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            rotationY: 0,
+            duration: 0.8,
+            stagger: 0.1,
+            ease: "power3.out",
+            overwrite: true
+          }
+        );
+      },
+      onEnterBack: batch => {
+        gsap.to(batch, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          stagger: 0.05,
+          duration: 0.5
+        });
+      },
+      onLeaveBack: batch => {
+        gsap.to(batch, {
+          opacity: 0,
+          y: 60,
+          scale: 0.9,
+          stagger: 0.05,
+          duration: 0.5,
+          overwrite: true
+        });
+      }
+    });
+    
+    // Add parallax effect to card images
+    gsap.utils.toArray(".card-image").forEach((image: any) => {
+      const card = image.closest('.portfolio-item');
+      if (card) {
+        gsap.to(image, {
+          y: "-20%",
+          ease: "none",
+          scrollTrigger: {
+            trigger: card,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1
+          }
+        });
+      }
+    });
+  };
+
+  // Load SplitText plugin
+  useEffect(() => {
+    // Check if GSAP and ScrollTrigger are already loaded
+    if (window.gsap && window.ScrollTrigger) {
+      gsapLoaded.current = true;
+    }
+    
+    // Load SplitText plugin if not already loaded
+    if (!document.getElementById('gsap-splittext')) {
+      const splitTextScript = document.createElement('script');
+      splitTextScript.id = 'gsap-splittext';
+      splitTextScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/SplitText.min.js';
+      splitTextScript.async = true;
+      document.body.appendChild(splitTextScript);
+      
+      splitTextScript.onload = () => {
+        if (gsapLoaded.current) {
+          initAnimations();
+        }
+      };
+    } else if (window.SplitText && gsapLoaded.current) {
+      initAnimations();
+    }
+    
+    // Clean up
+    return () => {
+      if (window.ScrollTrigger) {
+        // Clean up only the ScrollTrigger instances for this component
+        window.ScrollTrigger.getAll().forEach(trigger => {
+          if (trigger.vars.trigger === portfolioRef.current || 
+              trigger.vars.trigger?.closest('#portfolio')) {
+            trigger.kill();
+          }
+        });
+      }
+    };
+  }, []);
+  
+  // Re-initialize animations when tab changes
+  useEffect(() => {
+    if (window.gsap && window.ScrollTrigger && window.SplitText) {
+      // Small timeout to ensure DOM is updated before animating
+      setTimeout(() => {
+        initAnimations();
+      }, 100);
+    }
+  }, [activeTab]);
+  
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+  };
 
   return (
-    <section id="portfolio" className="py-20 bg-muted/30">
+    <section id="portfolio" ref={portfolioRef} className="py-20 bg-muted/30">
       <div className="container px-4">
         <div className="text-center mb-12">
           <h2 className="section-heading portfolio-title text-3xl md:text-4xl font-serif font-bold mb-4">Portfolio</h2>
@@ -68,7 +246,7 @@ const Portfolio = () => {
           </p>
         </div>
 
-        <Tabs defaultValue="all" className="w-full">
+        <Tabs defaultValue="all" className="w-full" onValueChange={handleTabChange}>
           <TabsList className="portfolio-filters mx-auto mb-8 flex justify-center">
             <TabsTrigger value="all">All</TabsTrigger>
             <TabsTrigger value="nature">Nature</TabsTrigger>
@@ -76,28 +254,41 @@ const Portfolio = () => {
             <TabsTrigger value="events">Events</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="all" className="animate-fade-in">
+          <TabsContent value="all" className="portfolio-grid-container">
             <div className="portfolio-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {portfolioItems.map((item) => (
+              {portfolioItems.map((item, index) => (
                 <PortfolioItem 
                   key={item.id} 
                   item={item} 
-                  onClick={() => setSelectedImage(item)} 
+                  onClick={() => setSelectedImage(item)}
+                  ref={el => {
+                    if (el && itemsRef.current) {
+                      itemsRef.current[index] = el;
+                    }
+                  }}
                 />
               ))}
             </div>
           </TabsContent>
 
           {['nature', 'portraits', 'events'].map((category) => (
-            <TabsContent key={category} value={category} className="animate-fade-in">
+            <TabsContent key={category} value={category} className="portfolio-grid-container">
               <div className="portfolio-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {portfolioItems
                   .filter((item) => item.category === category)
-                  .map((item) => (
+                  .map((item, index) => (
                     <PortfolioItem 
                       key={item.id} 
                       item={item} 
-                      onClick={() => setSelectedImage(item)} 
+                      onClick={() => setSelectedImage(item)}
+                      ref={el => {
+                        if (el && itemsRef.current) {
+                          const filteredIndex = portfolioItems
+                            .filter(i => i.category === category)
+                            .findIndex(i => i.id === item.id);
+                          itemsRef.current[portfolioItems.length + filteredIndex] = el;
+                        }
+                      }}
                     />
                   ))}
               </div>
@@ -134,15 +325,19 @@ const Portfolio = () => {
   );
 };
 
-const PortfolioItem = ({ 
-  item, 
-  onClick 
-}: { 
-  item: { id: number; title: string; category: string; image: string }; 
-  onClick: () => void 
-}) => {
+const PortfolioItem = React.forwardRef<
+  HTMLDivElement, 
+  { 
+    item: { id: number; title: string; category: string; image: string }; 
+    onClick: () => void 
+  }
+>(({ item, onClick }, ref) => {
   return (
-    <Card className="portfolio-item overflow-hidden group cursor-pointer hover:shadow-lg transition-all duration-300" onClick={onClick}>
+    <Card 
+      ref={ref}
+      className="portfolio-item overflow-hidden group cursor-pointer hover:shadow-lg transition-all duration-300" 
+      onClick={onClick}
+    >
       <CardContent className="p-0 relative">
         <div className="aspect-square overflow-hidden portfolio-image-container">
           <img 
@@ -164,6 +359,7 @@ const PortfolioItem = ({
       </CardContent>
     </Card>
   );
-};
+});
+PortfolioItem.displayName = "PortfolioItem";
 
 export default Portfolio;
