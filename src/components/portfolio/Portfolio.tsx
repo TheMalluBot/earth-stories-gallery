@@ -1,13 +1,13 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { portfolioItems } from './PortfolioData';
+import { portfolioItems, PortfolioItem } from './PortfolioData';
 import PortfolioItem from './PortfolioItem';
 import PortfolioImageModal from './PortfolioImageModal';
 import { initPortfolioAnimations } from './PortfolioAnimations';
 
 const Portfolio = () => {
-  const [selectedImage, setSelectedImage] = useState<null | { id: number; image: string; title: string }>(null);
+  const [selectedImage, setSelectedImage] = useState<PortfolioItem | null>(null);
   const [activeTab, setActiveTab] = useState("all");
   const portfolioRef = useRef<HTMLElement>(null);
   const itemsRef = useRef<HTMLDivElement[]>([]);

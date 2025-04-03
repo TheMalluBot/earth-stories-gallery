@@ -8,8 +8,13 @@ export const initPortfolioAnimations = (
   
   // Clear any existing ScrollTrigger instances for this section
   ScrollTrigger.getAll().forEach(trigger => {
-    if (trigger.vars.trigger === portfolioRef.current || 
-        trigger.vars.trigger?.closest('#portfolio')) {
+    if (trigger.vars.trigger === portfolioRef.current) {
+      trigger.kill();
+    } else if (typeof trigger.vars.trigger === 'object' && 
+               trigger.vars.trigger !== null && 
+               'closest' in trigger.vars.trigger && 
+               typeof trigger.vars.trigger.closest === 'function' && 
+               trigger.vars.trigger.closest('#portfolio')) {
       trigger.kill();
     }
   });

@@ -32,7 +32,10 @@ const PortfolioImageModal: React.FC<PortfolioImageModalProps> = ({
           alt={selectedImage.title} 
           className="w-full h-auto rounded-md animate-scale-in"
         />
-        <p className="text-white text-center mt-4 text-xl font-serif">{selectedImage.title}</p>
+        <div className="text-white text-center mt-4">
+          <p className="text-xl font-serif">{selectedImage.title}</p>
+          <p className="text-sm capitalize text-white/80">{selectedImage.category}</p>
+        </div>
       </div>
     </div>
   );
