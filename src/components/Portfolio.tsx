@@ -1,5 +1,4 @@
-
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -62,12 +61,10 @@ const Portfolio = () => {
   const itemsRef = useRef<HTMLDivElement[]>([]);
   const gsapLoaded = useRef<boolean>(false);
   
-  // Function to initialize GSAP animations
   const initAnimations = () => {
     const { gsap, ScrollTrigger } = window;
     if (!gsap || !ScrollTrigger || !portfolioRef.current) return;
     
-    // Clear any existing ScrollTrigger instances for this section
     ScrollTrigger.getAll().forEach(trigger => {
       if (trigger.vars.trigger === portfolioRef.current || 
           trigger.vars.trigger?.closest('#portfolio')) {
@@ -75,7 +72,6 @@ const Portfolio = () => {
       }
     });
     
-    // Animate the section title and subtitle with text reveal effect
     const titleSplit = new window.SplitText(".portfolio-title", { type: "chars" });
     const subtitleSplit = new window.SplitText(".portfolio-subtitle", { type: "chars" });
     
@@ -108,7 +104,6 @@ const Portfolio = () => {
       }
     });
     
-    // Animate filters with a bounce effect
     gsap.from(".portfolio-filters", {
       opacity: 0,
       y: 30,
@@ -121,7 +116,6 @@ const Portfolio = () => {
       }
     });
     
-    // Use ScrollTrigger.batch for efficient card animations
     ScrollTrigger.batch(".portfolio-item", {
       interval: 0.1,
       batchMax: 4,
@@ -166,7 +160,6 @@ const Portfolio = () => {
       }
     });
     
-    // Add parallax effect to card images
     gsap.utils.toArray(".card-image").forEach((image: any) => {
       const card = image.closest('.portfolio-item');
       if (card) {
@@ -184,14 +177,11 @@ const Portfolio = () => {
     });
   };
 
-  // Load SplitText plugin
   useEffect(() => {
-    // Check if GSAP and ScrollTrigger are already loaded
     if (window.gsap && window.ScrollTrigger) {
       gsapLoaded.current = true;
     }
     
-    // Load SplitText plugin if not already loaded
     if (!document.getElementById('gsap-splittext')) {
       const splitTextScript = document.createElement('script');
       splitTextScript.id = 'gsap-splittext';
@@ -208,10 +198,8 @@ const Portfolio = () => {
       initAnimations();
     }
     
-    // Clean up
     return () => {
       if (window.ScrollTrigger) {
-        // Clean up only the ScrollTrigger instances for this component
         window.ScrollTrigger.getAll().forEach(trigger => {
           if (trigger.vars.trigger === portfolioRef.current || 
               trigger.vars.trigger?.closest('#portfolio')) {
@@ -222,10 +210,8 @@ const Portfolio = () => {
     };
   }, []);
   
-  // Re-initialize animations when tab changes
   useEffect(() => {
     if (window.gsap && window.ScrollTrigger && window.SplitText) {
-      // Small timeout to ensure DOM is updated before animating
       setTimeout(() => {
         initAnimations();
       }, 100);
@@ -297,7 +283,6 @@ const Portfolio = () => {
         </Tabs>
       </div>
 
-      {/* Lightbox */}
       {selectedImage && (
         <div 
           className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
