@@ -150,50 +150,47 @@ const Portfolio = () => {
       }
     });
     
-    // Use ScrollTrigger.batch for efficient card animations
-    ScrollTrigger.batch(".portfolio-item", {
-      interval: 0.1,
-      batchMax: 4,
-      onEnter: batch => {
-        gsap.fromTo(batch, 
+    // Create alternating row animations for portfolio items
+    const portfolioItems = document.querySelectorAll('.portfolio-grid .portfolio-item');
+    if (portfolioItems.length > 0) {
+      // Group items by row
+      const rows = [];
+      const itemsPerRow = window.innerWidth >= 1024 ? 4 : window.innerWidth >= 640 ? 2 : 1;
+      
+      for (let i = 0; i < portfolioItems.length; i += itemsPerRow) {
+        rows.push(Array.from(portfolioItems).slice(i, i + itemsPerRow));
+      }
+      
+      // Apply alternating animations to each row
+      rows.forEach((row, rowIndex) => {
+        const isEvenRow = rowIndex % 2 === 0;
+        const xOffset = isEvenRow ? -50 : 50;
+        
+        gsap.fromTo(
+          row,
           { 
             opacity: 0, 
-            y: 60, 
-            scale: 0.9,
-            rotationY: 15
+            x: xOffset,
+            y: 30,
+            scale: 0.9
           },
           {
             opacity: 1,
+            x: 0,
             y: 0,
             scale: 1,
-            rotationY: 0,
-            duration: 0.8,
             stagger: 0.1,
+            duration: 0.8,
             ease: "power3.out",
-            overwrite: true
+            scrollTrigger: {
+              trigger: row[0],
+              start: "top 85%",
+              toggleActions: "play none none none"
+            }
           }
         );
-      },
-      onEnterBack: batch => {
-        gsap.to(batch, {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          stagger: 0.05,
-          duration: 0.5
-        });
-      },
-      onLeaveBack: batch => {
-        gsap.to(batch, {
-          opacity: 0,
-          y: 60,
-          scale: 0.9,
-          stagger: 0.05,
-          duration: 0.5,
-          overwrite: true
-        });
-      }
-    });
+      });
+    }
     
     // Add parallax effect to card images
     gsap.utils.toArray(".card-image").forEach((image: any) => {
@@ -225,8 +222,8 @@ const Portfolio = () => {
     gsap.to(portfolioItems, {
       opacity: 1,
       y: 0,
+      x: 0,
       scale: 1,
-      rotationY: 0,
       duration: 0.5,
       stagger: 0.05,
       ease: "power3.out",

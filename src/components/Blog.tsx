@@ -3,7 +3,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowRight } from 'lucide-react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { useEffect, useRef } from 'react';
 
+// Add more blog posts
 const blogPosts = [
   {
     id: 1,
@@ -76,12 +78,142 @@ const blogPosts = [
     category: 'Field Techniques',
     image: 'https://images.unsplash.com/photo-1520209759809-a9bcb6cb3241?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     readTime: '8 min read'
+  },
+  {
+    id: 9,
+    title: 'Underwater Photography Fundamentals',
+    excerpt: 'Dive into the world of underwater photography with equipment recommendations and essential techniques.',
+    date: 'September 30, 2023',
+    category: 'Specialty',
+    image: 'https://images.unsplash.com/photo-1551244072-5d12893278ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    readTime: '15 min read'
+  },
+  {
+    id: 10,
+    title: 'Drone Photography: A Beginner's Guide',
+    excerpt: 'Everything you need to know about capturing stunning aerial images and videos with drones.',
+    date: 'August 15, 2023',
+    category: 'Aerial',
+    image: 'https://images.unsplash.com/photo-1506477331477-33d5d8b3dc85?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    readTime: '13 min read'
+  },
+  {
+    id: 11,
+    title: 'Best Camera Settings for Macro Photography',
+    excerpt: 'Master the technical aspects of capturing stunning close-up images of small subjects.',
+    date: 'July 22, 2023',
+    category: 'Macro',
+    image: 'https://images.unsplash.com/photo-1550639525-c97d455acf70?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    readTime: '9 min read'
+  },
+  {
+    id: 12,
+    title: 'Creating a Photography Portfolio That Stands Out',
+    excerpt: 'Learn how to curate and present your work to attract clients and showcase your unique style.',
+    date: 'June 10, 2023',
+    category: 'Business',
+    image: 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    readTime: '10 min read'
   }
 ];
 
 const Blog = () => {
+  const blogRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const { gsap, ScrollTrigger } = window;
+    if (!gsap || !ScrollTrigger || !blogRef.current) return;
+
+    // Clear any existing ScrollTrigger instances for this section
+    ScrollTrigger.getAll().forEach(trigger => {
+      if (trigger.vars.trigger === blogRef.current || 
+          trigger.vars.trigger?.closest('#blog')) {
+        trigger.kill();
+      }
+    });
+
+    // Enhance blog heading animations with better visibility
+    gsap.from(".blog-title", {
+      opacity: 0,
+      y: 30,
+      duration: 0.8,
+      ease: "back.out(1.7)",
+      scrollTrigger: {
+        trigger: ".blog-title",
+        start: "top 85%",
+        toggleActions: "play none none none"
+      }
+    });
+    
+    gsap.from(".blog-subtitle", {
+      opacity: 0,
+      y: 20,
+      duration: 0.8,
+      delay: 0.2,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: ".blog-subtitle",
+        start: "top 85%",
+        toggleActions: "play none none none"
+      }
+    });
+
+    // Blog carousel animation
+    gsap.from(".blog-carousel", {
+      opacity: 0,
+      y: 40,
+      duration: 0.8,
+      delay: 0.3,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: ".blog-carousel",
+        start: "top 80%",
+        toggleActions: "play none none none"
+      }
+    });
+
+    // Animate blog cards with staggered effect
+    const blogCards = document.querySelectorAll('.blog-post');
+    gsap.from(blogCards, {
+      opacity: 0,
+      y: 30,
+      stagger: 0.1,
+      duration: 0.6,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: ".blog-carousel",
+        start: "top 75%",
+        toggleActions: "play none none none"
+      }
+    });
+
+    // Animate CTA section
+    gsap.from(".blog-cta", {
+      opacity: 0,
+      y: 30,
+      duration: 0.8,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: ".blog-cta",
+        start: "top 80%",
+        toggleActions: "play none none none"
+      }
+    });
+
+    return () => {
+      if (window.ScrollTrigger) {
+        ScrollTrigger.getAll().forEach(trigger => {
+          if (trigger.vars.trigger === blogRef.current || 
+              trigger.vars.trigger?.closest('#blog')) {
+            trigger.kill();
+          }
+        });
+      }
+    };
+  }, []);
+
   return (
-    <section id="blog" className="py-20 bg-muted/30">
+    <section id="blog" ref={blogRef} className="py-20 bg-muted/30">
       <div className="container px-4">
         <div className="text-center mb-12">
           <h2 className="section-heading blog-title text-3xl md:text-4xl font-serif font-bold mb-4">Learning Hub</h2>
@@ -98,6 +230,7 @@ const Blog = () => {
               loop: true,
             }}
             className="w-full"
+            showArrows={true}
           >
             <CarouselContent className="-ml-2 md:-ml-4">
               {blogPosts.map((post) => (
@@ -143,7 +276,7 @@ const Blog = () => {
           </Carousel>
         </div>
 
-        <div className="bg-primary/5 rounded-lg p-8 flex flex-col md:flex-row items-center justify-between">
+        <div className="blog-cta bg-primary/5 rounded-lg p-8 flex flex-col md:flex-row items-center justify-between">
           <div className="mb-6 md:mb-0 md:mr-8 text-center md:text-left">
             <h3 className="text-xl font-serif font-bold mb-2">Nature Photography eBook</h3>
             <p className="text-muted-foreground mb-0">
