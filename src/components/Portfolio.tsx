@@ -1,7 +1,9 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 const portfolioItems = [
   {
@@ -60,11 +62,13 @@ const Portfolio = () => {
   const portfolioRef = useRef<HTMLElement>(null);
   const itemsRef = useRef<HTMLDivElement[]>([]);
   const gsapLoaded = useRef<boolean>(false);
+  const imagesLoaded = useRef<boolean>(false);
   
   const initAnimations = () => {
     const { gsap, ScrollTrigger } = window;
     if (!gsap || !ScrollTrigger || !portfolioRef.current) return;
     
+    // Clear any existing ScrollTrigger instances for this section
     ScrollTrigger.getAll().forEach(trigger => {
       if (trigger.vars.trigger === portfolioRef.current || 
           trigger.vars.trigger?.closest('#portfolio')) {
@@ -72,38 +76,68 @@ const Portfolio = () => {
       }
     });
     
-    const titleSplit = new window.SplitText(".portfolio-title", { type: "chars" });
-    const subtitleSplit = new window.SplitText(".portfolio-subtitle", { type: "chars" });
+    // Create text split animations
+    if (window.SplitText) {
+      const titleSplit = new window.SplitText(".portfolio-title", { type: "chars" });
+      const subtitleSplit = new window.SplitText(".portfolio-subtitle", { type: "chars" });
+      
+      gsap.from(titleSplit.chars, {
+        opacity: 0,
+        y: 20,
+        rotationX: -90,
+        stagger: 0.02,
+        duration: 0.8,
+        ease: "back.out(1.7)",
+        scrollTrigger: {
+          trigger: ".portfolio-title",
+          start: "top 85%",
+          toggleActions: "play none none none"
+        }
+      });
+      
+      gsap.from(subtitleSplit.chars, {
+        opacity: 0,
+        y: 20,
+        rotationX: -90,
+        stagger: 0.01,
+        duration: 0.8,
+        ease: "back.out(1.7)",
+        delay: 0.3,
+        scrollTrigger: {
+          trigger: ".portfolio-subtitle",
+          start: "top 85%",
+          toggleActions: "play none none none"
+        }
+      });
+    } else {
+      // Fallback if SplitText is not loaded
+      gsap.from(".portfolio-title", {
+        opacity: 0,
+        y: 20,
+        duration: 0.8,
+        ease: "back.out(1.7)",
+        scrollTrigger: {
+          trigger: ".portfolio-title",
+          start: "top 85%",
+          toggleActions: "play none none none"
+        }
+      });
+      
+      gsap.from(".portfolio-subtitle", {
+        opacity: 0,
+        y: 20,
+        duration: 0.8,
+        ease: "back.out(1.7)",
+        delay: 0.3,
+        scrollTrigger: {
+          trigger: ".portfolio-subtitle",
+          start: "top 85%",
+          toggleActions: "play none none none"
+        }
+      });
+    }
     
-    gsap.from(titleSplit.chars, {
-      opacity: 0,
-      y: 20,
-      rotationX: -90,
-      stagger: 0.02,
-      duration: 0.8,
-      ease: "back.out(1.7)",
-      scrollTrigger: {
-        trigger: ".portfolio-title",
-        start: "top 85%",
-        toggleActions: "play none none none"
-      }
-    });
-    
-    gsap.from(subtitleSplit.chars, {
-      opacity: 0,
-      y: 20,
-      rotationX: -90,
-      stagger: 0.01,
-      duration: 0.8,
-      ease: "back.out(1.7)",
-      delay: 0.3,
-      scrollTrigger: {
-        trigger: ".portfolio-subtitle",
-        start: "top 85%",
-        toggleActions: "play none none none"
-      }
-    });
-    
+    // Animate filters with a bounce effect
     gsap.from(".portfolio-filters", {
       opacity: 0,
       y: 30,
@@ -116,6 +150,7 @@ const Portfolio = () => {
       }
     });
     
+    // Use ScrollTrigger.batch for efficient card animations
     ScrollTrigger.batch(".portfolio-item", {
       interval: 0.1,
       batchMax: 4,
@@ -160,6 +195,7 @@ const Portfolio = () => {
       }
     });
     
+    // Add parallax effect to card images
     gsap.utils.toArray(".card-image").forEach((image: any) => {
       const card = image.closest('.portfolio-item');
       if (card) {
@@ -177,11 +213,36 @@ const Portfolio = () => {
     });
   };
 
+  // Function to ensure all images are loaded and visible
+  const ensureImagesVisible = () => {
+    if (imagesLoaded.current) return;
+    
+    const { gsap } = window;
+    if (!gsap) return;
+    
+    // Force all images to be visible right away
+    const portfolioItems = document.querySelectorAll('.portfolio-item');
+    gsap.to(portfolioItems, {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      rotationY: 0,
+      duration: 0.5,
+      stagger: 0.05,
+      ease: "power3.out",
+      onComplete: () => {
+        imagesLoaded.current = true;
+      }
+    });
+  };
+
+  // Load GSAP plugins and initialize animations
   useEffect(() => {
     if (window.gsap && window.ScrollTrigger) {
       gsapLoaded.current = true;
     }
     
+    // Load SplitText plugin if not already loaded
     if (!document.getElementById('gsap-splittext')) {
       const splitTextScript = document.createElement('script');
       splitTextScript.id = 'gsap-splittext';
@@ -192,12 +253,15 @@ const Portfolio = () => {
       splitTextScript.onload = () => {
         if (gsapLoaded.current) {
           initAnimations();
+          setTimeout(ensureImagesVisible, 300);
         }
       };
     } else if (window.SplitText && gsapLoaded.current) {
       initAnimations();
+      setTimeout(ensureImagesVisible, 300);
     }
     
+    // Clean up
     return () => {
       if (window.ScrollTrigger) {
         window.ScrollTrigger.getAll().forEach(trigger => {
@@ -210,10 +274,12 @@ const Portfolio = () => {
     };
   }, []);
   
+  // Re-initialize animations when tab changes
   useEffect(() => {
     if (window.gsap && window.ScrollTrigger && window.SplitText) {
       setTimeout(() => {
         initAnimations();
+        ensureImagesVisible();
       }, 100);
     }
   }, [activeTab]);
