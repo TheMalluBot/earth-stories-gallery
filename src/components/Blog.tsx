@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowRight } from 'lucide-react';
@@ -90,7 +89,7 @@ const blogPosts = [
   },
   {
     id: 10,
-    title: 'Drone Photography: A Beginner's Guide',
+    title: 'Drone Photography: A Beginner\'s Guide',
     excerpt: 'Everything you need to know about capturing stunning aerial images and videos with drones.',
     date: 'August 15, 2023',
     category: 'Aerial',
@@ -230,7 +229,6 @@ const Blog = () => {
               loop: true,
             }}
             className="w-full"
-            showArrows={true}
           >
             <CarouselContent className="-ml-2 md:-ml-4">
               {blogPosts.map((post) => (
