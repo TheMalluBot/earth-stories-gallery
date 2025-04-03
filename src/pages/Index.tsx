@@ -91,8 +91,7 @@ const Index = () => {
         trigger: "#hero",
         start: "top top",
         end: "bottom top",
-        scrub: true,
-        markers: true // Remove this in production
+        scrub: true
       }
     });
     
@@ -105,8 +104,7 @@ const Index = () => {
         trigger: "#hero",
         start: "center top",
         end: "bottom top",
-        scrub: 0.5,
-        markers: true // Remove this in production
+        scrub: 0.5
       }
     });
     
@@ -120,8 +118,7 @@ const Index = () => {
         scrollTrigger: {
           trigger: heading,
           start: "top 85%",
-          toggleActions: "play none none none",
-          markers: true // Remove this in production
+          toggleActions: "play none none none"
         }
       });
     });
@@ -135,8 +132,7 @@ const Index = () => {
       scrollTrigger: {
         trigger: ".portfolio-subtitle",
         start: "top 85%",
-        toggleActions: "play none none none",
-        markers: true // Remove this in production
+        toggleActions: "play none none none"
       }
     });
     
@@ -148,8 +144,7 @@ const Index = () => {
       scrollTrigger: {
         trigger: ".portfolio-filters",
         start: "top 85%",
-        toggleActions: "play none none none",
-        markers: true // Remove this in production
+        toggleActions: "play none none none"
       }
     });
     
@@ -157,7 +152,6 @@ const Index = () => {
     ScrollTrigger.batch(".portfolio-item", {
       batchMax: 4,
       start: "top 85%",
-      markers: true, // Remove this in production
       onEnter: batch => gsap.from(batch, {
         opacity: 0,
         y: 40,
@@ -178,8 +172,7 @@ const Index = () => {
           trigger: img.closest(".portfolio-item"),
           start: "top bottom",
           end: "bottom top",
-          scrub: true,
-          markers: false // Remove or set to false in production
+          scrub: true
         }
       });
     });
@@ -194,8 +187,19 @@ const Index = () => {
       scrollTrigger: {
         trigger: ".workshops-grid",
         start: "top 75%",
-        toggleActions: "play none none none",
-        markers: true // Remove this in production
+        toggleActions: "play none none none"
+      }
+    });
+    
+    // Add a subtle horizontal shift to workshop cards container
+    gsap.to(".workshops-grid", {
+      xPercent: -3,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".workshops-grid",
+        start: "top bottom",
+        end: "bottom top",
+        scrub: 1
       }
     });
     
@@ -208,38 +212,74 @@ const Index = () => {
       scrollTrigger: {
         trigger: ".blog-subtitle",
         start: "top 85%",
-        toggleActions: "play none none none",
-        markers: true // Remove this in production
+        toggleActions: "play none none none"
       }
     });
     
-    gsap.from(".blog-post", {
-      opacity: 0,
-      y: 40,
-      duration: 0.7,
-      stagger: 0.15,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: ".blog-grid",
-        start: "top 75%",
-        toggleActions: "play none none none",
-        markers: true // Remove this in production
-      }
+    // Blog posts with staggered reveal and subtle rotation
+    ScrollTrigger.batch(".blog-post", {
+      batchMax: 4,
+      start: "top 85%",
+      onEnter: batch => gsap.from(batch, {
+        opacity: 0,
+        y: 50,
+        rotationY: 5,
+        duration: 0.7,
+        stagger: 0.15,
+        ease: "back.out(1.2)",
+        overwrite: true
+      })
     });
     
-    // About section
-    gsap.from(".about-content", {
-      opacity: 0,
-      y: 30,
-      duration: 0.8,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: "#about",
-        start: "top 75%",
-        toggleActions: "play none none none",
-        markers: true // Remove this in production
-      }
-    });
+    // About section with advanced animation
+    const aboutSection = document.querySelector("#about");
+    if (aboutSection) {
+      // Create a timeline for the about section
+      const aboutTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: "#about",
+          start: "top 70%",
+          end: "center center",
+          scrub: 0.5
+        }
+      });
+      
+      // Add animations to the timeline
+      aboutTl
+        .from(".about-content", {
+          opacity: 0,
+          y: 50,
+          duration: 0.5
+        })
+        .from(".about-stats-container > div", {
+          opacity: 0,
+          y: 30,
+          stagger: 0.1,
+          duration: 0.4
+        }, "-=0.2");
+      
+      // Animate the stats numbers
+      gsap.utils.toArray(".about-stats-container .text-3xl").forEach((stat: any) => {
+        const endValue = parseInt(stat.textContent);
+        gsap.fromTo(stat, 
+          { textContent: 0 },
+          {
+            textContent: endValue,
+            duration: 2,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: stat,
+              start: "top 80%",
+              toggleActions: "play none none none"
+            },
+            snap: { textContent: 1 },
+            onUpdate: function() {
+              stat.textContent = Math.ceil(this.targets()[0].textContent) + "+";
+            }
+          }
+        );
+      });
+    }
     
     // Contact section
     gsap.from(".contact-element", {
@@ -251,48 +291,22 @@ const Index = () => {
       scrollTrigger: {
         trigger: "#contact",
         start: "top 80%",
-        toggleActions: "play none none none",
-        markers: true // Remove this in production
+        toggleActions: "play none none none"
       }
     });
     
     // Floating elements parallax effect
     gsap.utils.toArray(".floating-element").forEach((element: any) => {
       gsap.to(element, {
-        y: `random(-40, 40)`,
-        x: `random(-40, 40)`,
-        duration: "random(3, 8)",
-        ease: "sine.inOut",
-        repeat: -1,
-        yoyo: true,
+        y: 'random(-40, 40)',
+        x: 'random(-40, 40)',
         scrollTrigger: {
           trigger: "body",
           start: "top top",
           end: "bottom bottom",
-          scrub: 1,
+          scrub: 1
         }
       });
-    });
-    
-    // Additional parallax effects on scroll
-    gsap.to(".hero-title", {
-      y: 100,
-      scrollTrigger: {
-        trigger: "body",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 1,
-      }
-    });
-    
-    gsap.to(".hero-description", {
-      y: 150,
-      scrollTrigger: {
-        trigger: "body",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 1.5,
-      }
     });
   };
 
