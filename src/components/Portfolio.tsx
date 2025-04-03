@@ -144,11 +144,12 @@ const PortfolioItem = ({
   return (
     <Card className="portfolio-item overflow-hidden group cursor-pointer hover:shadow-lg transition-all duration-300" onClick={onClick}>
       <CardContent className="p-0 relative">
-        <div className="aspect-square overflow-hidden">
+        <div className="aspect-square overflow-hidden portfolio-image-container">
           <img 
             src={item.image} 
             alt={item.title} 
             className="card-image w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
+            loading="eager"
           />
         </div>
         <div className={cn(

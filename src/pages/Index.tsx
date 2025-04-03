@@ -163,18 +163,21 @@ const Index = () => {
       })
     });
     
-    // Card image parallax
-    gsap.utils.toArray(".portfolio-item .card-image").forEach((img: any) => {
-      gsap.to(img, {
-        yPercent: -15,
-        ease: "none",
-        scrollTrigger: {
-          trigger: img.closest(".portfolio-item"),
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true
-        }
-      });
+    // Card image parallax - IMPROVED VERSION
+    gsap.utils.toArray(".portfolio-image-container").forEach((container: any) => {
+      const image = container.querySelector('img');
+      if (image) {
+        gsap.to(image, {
+          y: "-20%",
+          ease: "none",
+          scrollTrigger: {
+            trigger: container,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          }
+        });
+      }
     });
     
     // Workshop cards (staggered)
@@ -203,7 +206,7 @@ const Index = () => {
       }
     });
     
-    // Blog posts
+    // Blog carousel animations
     gsap.from(".blog-subtitle", {
       opacity: 0,
       y: 30,
@@ -216,19 +219,17 @@ const Index = () => {
       }
     });
     
-    // Blog posts with staggered reveal and subtle rotation
-    ScrollTrigger.batch(".blog-post", {
-      batchMax: 4,
-      start: "top 85%",
-      onEnter: batch => gsap.from(batch, {
-        opacity: 0,
-        y: 50,
-        rotationY: 5,
-        duration: 0.7,
-        stagger: 0.15,
-        ease: "back.out(1.2)",
-        overwrite: true
-      })
+    // Blog posts with staggered reveal
+    gsap.from(".blog-carousel", {
+      opacity: 0,
+      x: -30,
+      duration: 0.8,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: ".blog-carousel",
+        start: "top 85%",
+        toggleActions: "play none none none"
+      }
     });
     
     // About section with advanced animation
@@ -258,8 +259,23 @@ const Index = () => {
           duration: 0.4
         }, "-=0.2");
       
+      // About images animation (improved)
+      gsap.utils.toArray(".about-image").forEach((img: any) => {
+        gsap.to(img, {
+          y: "-15%",
+          scale: 1.05,
+          ease: "none",
+          scrollTrigger: {
+            trigger: img.closest(".about-image-wrapper"),
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          }
+        });
+      });
+      
       // Animate the stats numbers
-      gsap.utils.toArray(".about-stats-container .text-3xl").forEach((stat: any) => {
+      gsap.utils.toArray(".about-stats-container .stat-number").forEach((stat: any) => {
         const endValue = parseInt(stat.textContent);
         gsap.fromTo(stat, 
           { textContent: 0 },
@@ -274,10 +290,87 @@ const Index = () => {
             },
             snap: { textContent: 1 },
             onUpdate: function() {
-              stat.textContent = Math.ceil(this.targets()[0].textContent) + "+";
+              stat.textContent = Math.ceil(this.targets()[0].textContent);
             }
           }
         );
+      });
+      
+      // Behind the Scenes text effect (revealing from nothing)
+      gsap.from(".behind-scenes-title", {
+        opacity: 0,
+        duration: 0.8,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".behind-scenes-title",
+          start: "top 85%",
+          toggleActions: "play none none none"
+        }
+      });
+      
+      gsap.from(".behind-scenes-description", {
+        opacity: 0,
+        duration: 0.8,
+        delay: 0.2,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".behind-scenes-description",
+          start: "top 85%",
+          toggleActions: "play none none none"
+        }
+      });
+      
+      // Creative text effect for Behind the Scenes cards
+      gsap.utils.toArray(".behind-scenes-card").forEach((card: any, index: number) => {
+        const title = card.querySelector(".behind-scenes-card-title");
+        const text = card.querySelector(".behind-scenes-card-text");
+        const button = card.querySelector("button");
+        
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: card,
+            start: "top 85%",
+            toggleActions: "play none none none"
+          }
+        });
+        
+        // Text splitting effect (character by character)
+        if (title) {
+          const chars = title.textContent?.split('') || [];
+          title.innerHTML = '';
+          chars.forEach(char => {
+            const span = document.createElement('span');
+            span.textContent = char === ' ' ? ' ' : char;
+            span.style.display = char === ' ' ? 'inline' : 'inline-block';
+            span.style.opacity = '0';
+            title.appendChild(span);
+          });
+          
+          tl.to(title.childNodes, {
+            opacity: 1,
+            stagger: 0.03,
+            ease: "power2.out",
+            duration: 0.4
+          });
+        }
+        
+        // Text fade in
+        if (text) {
+          tl.from(text, {
+            opacity: 0,
+            y: 10,
+            duration: 0.5
+          }, "-=0.2");
+        }
+        
+        // Button fade in
+        if (button) {
+          tl.from(button, {
+            opacity: 0,
+            y: 10,
+            duration: 0.5
+          }, "-=0.2");
+        }
       });
     }
     

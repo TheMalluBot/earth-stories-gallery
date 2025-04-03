@@ -2,6 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowRight } from 'lucide-react';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
 const blogPosts = [
   {
@@ -89,40 +90,57 @@ const Blog = () => {
           </p>
         </div>
 
-        <div className="blog-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-          {blogPosts.map((post) => (
-            <Card key={post.id} className="blog-post overflow-hidden h-full flex flex-col hover:shadow-lg transition-all duration-300">
-              <div className="h-48 overflow-hidden">
-                <img 
-                  src={post.image} 
-                  alt={post.title} 
-                  className="w-full h-full object-cover transform transition-transform duration-500 hover:scale-110"
-                />
-              </div>
-              <CardHeader className="pb-2">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-xs text-primary font-medium px-2 py-1 bg-primary/10 rounded-full">
-                    {post.category}
-                  </span>
-                  <span className="text-xs text-muted-foreground">
-                    {post.readTime}
-                  </span>
-                </div>
-                <CardTitle className="font-serif text-lg">{post.title}</CardTitle>
-                <CardDescription className="text-sm">{post.date}</CardDescription>
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <p className="text-sm text-muted-foreground">
-                  {post.excerpt}
-                </p>
-              </CardContent>
-              <CardFooter>
-                <Button variant="ghost" className="px-0 hover:bg-transparent hover:text-primary">
-                  Read more <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
+        {/* Horizontal Carousel for Articles */}
+        <div className="blog-carousel mb-12">
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {blogPosts.map((post) => (
+                <CarouselItem key={post.id} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+                  <Card className="blog-post overflow-hidden h-full flex flex-col hover:shadow-lg transition-all duration-300">
+                    <div className="h-48 overflow-hidden">
+                      <img 
+                        src={post.image} 
+                        alt={post.title} 
+                        className="w-full h-full object-cover transform transition-transform duration-500 hover:scale-110"
+                      />
+                    </div>
+                    <CardHeader className="pb-2">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-xs text-primary font-medium px-2 py-1 bg-primary/10 rounded-full">
+                          {post.category}
+                        </span>
+                        <span className="text-xs text-muted-foreground">
+                          {post.readTime}
+                        </span>
+                      </div>
+                      <CardTitle className="font-serif text-lg">{post.title}</CardTitle>
+                      <CardDescription className="text-sm">{post.date}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex-grow">
+                      <p className="text-sm text-muted-foreground">
+                        {post.excerpt}
+                      </p>
+                    </CardContent>
+                    <CardFooter>
+                      <Button variant="ghost" className="px-0 hover:bg-transparent hover:text-primary">
+                        Read more <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <div className="flex justify-center mt-6">
+              <CarouselPrevious className="relative static translate-y-0 left-0 mr-2" />
+              <CarouselNext className="relative static translate-y-0 right-0" />
+            </div>
+          </Carousel>
         </div>
 
         <div className="bg-primary/5 rounded-lg p-8 flex flex-col md:flex-row items-center justify-between">
