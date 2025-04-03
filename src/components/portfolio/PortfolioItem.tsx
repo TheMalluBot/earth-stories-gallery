@@ -2,14 +2,14 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { PortfolioItem as PortfolioItemType } from './PortfolioData';
+import { PortfolioItem } from './PortfolioData';
 
 interface PortfolioItemProps {
-  item: PortfolioItemType;
+  item: PortfolioItem;
   onClick: () => void;
 }
 
-const PortfolioItem = React.forwardRef<HTMLDivElement, PortfolioItemProps>(
+const PortfolioItemComponent = React.forwardRef<HTMLDivElement, PortfolioItemProps>(
   ({ item, onClick }, ref) => {
     return (
       <Card 
@@ -41,6 +41,6 @@ const PortfolioItem = React.forwardRef<HTMLDivElement, PortfolioItemProps>(
   }
 );
 
-PortfolioItem.displayName = "PortfolioItem";
+PortfolioItemComponent.displayName = "PortfolioItemComponent";
 
-export default PortfolioItem;
+export default PortfolioItemComponent;

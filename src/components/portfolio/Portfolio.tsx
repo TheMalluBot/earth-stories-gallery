@@ -1,13 +1,13 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { portfolioItems, PortfolioItem } from './PortfolioData';
-import PortfolioItem from './PortfolioItem';
+import { portfolioItems, PortfolioItem as PortfolioItemType } from './PortfolioData';
+import PortfolioItemComponent from './PortfolioItem';
 import PortfolioImageModal from './PortfolioImageModal';
 import { initPortfolioAnimations } from './PortfolioAnimations';
 
 const Portfolio = () => {
-  const [selectedImage, setSelectedImage] = useState<PortfolioItem | null>(null);
+  const [selectedImage, setSelectedImage] = useState<PortfolioItemType | null>(null);
   const [activeTab, setActiveTab] = useState("all");
   const portfolioRef = useRef<HTMLElement>(null);
   const itemsRef = useRef<HTMLDivElement[]>([]);
@@ -65,7 +65,7 @@ const Portfolio = () => {
           <TabsContent value="all" className="portfolio-grid-container">
             <div className="portfolio-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {portfolioItems.map((item, index) => (
-                <PortfolioItem 
+                <PortfolioItemComponent 
                   key={item.id} 
                   item={item} 
                   onClick={() => setSelectedImage(item)}
@@ -85,7 +85,7 @@ const Portfolio = () => {
                 {portfolioItems
                   .filter((item) => item.category === category)
                   .map((item, index) => (
-                    <PortfolioItem 
+                    <PortfolioItemComponent 
                       key={item.id} 
                       item={item} 
                       onClick={() => setSelectedImage(item)}
