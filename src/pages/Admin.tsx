@@ -4,7 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { ArrowLeft, Edit, Trash, Plus, LogOut, PenLine, Image, Upload, Layout } from 'lucide-react';
+import { 
+  ArrowLeft, LogOut, PenLine, Image, Upload, Layout, 
+  Users, Calendar, User, Settings, Mail, BarChart3, Palette, BookOpen
+} from 'lucide-react';
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -52,7 +55,10 @@ const Admin = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Blog Posts</CardTitle>
+                  <CardTitle className="flex items-center">
+                    <BookOpen className="mr-2 h-5 w-5 text-primary" />
+                    Blog Posts
+                  </CardTitle>
                   <CardDescription>Manage your blog articles</CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -62,7 +68,7 @@ const Admin = () => {
                 </CardContent>
                 <CardFooter className="flex justify-between">
                   <Button size="sm" variant="outline" onClick={() => navigate('/admin/blog')}>
-                    <Edit className="mr-2 h-4 w-4" /> Manage Posts
+                    Manage Posts
                   </Button>
                   <Button size="sm" onClick={() => navigate('/admin/blog/new')}>
                     <PenLine className="mr-2 h-4 w-4" /> New Post
@@ -72,7 +78,10 @@ const Admin = () => {
               
               <Card>
                 <CardHeader>
-                  <CardTitle>Portfolio</CardTitle>
+                  <CardTitle className="flex items-center">
+                    <Image className="mr-2 h-5 w-5 text-primary" />
+                    Portfolio
+                  </CardTitle>
                   <CardDescription>Manage your photography portfolio</CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -82,17 +91,20 @@ const Admin = () => {
                 </CardContent>
                 <CardFooter className="flex justify-between">
                   <Button size="sm" variant="outline" onClick={() => navigate('/admin/portfolio')}>
-                    <Edit className="mr-2 h-4 w-4" /> Edit Portfolio
+                    Manage Photos
                   </Button>
                   <Button size="sm" onClick={() => navigate('/admin/portfolio/new')}>
-                    <Image className="mr-2 h-4 w-4" /> Add Photo
+                    <Upload className="mr-2 h-4 w-4" /> Add Photo
                   </Button>
                 </CardFooter>
               </Card>
               
               <Card>
                 <CardHeader>
-                  <CardTitle>Workshops</CardTitle>
+                  <CardTitle className="flex items-center">
+                    <Calendar className="mr-2 h-5 w-5 text-primary" />
+                    Workshops
+                  </CardTitle>
                   <CardDescription>Manage your upcoming workshops</CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -101,11 +113,76 @@ const Admin = () => {
                   </p>
                 </CardContent>
                 <CardFooter className="flex justify-between">
-                  <Button size="sm" variant="outline">
-                    <Edit className="mr-2 h-4 w-4" /> Edit Events
+                  <Button size="sm" variant="outline" onClick={() => navigate('/admin/workshops')}>
+                    Manage Events
                   </Button>
-                  <Button size="sm">
-                    <Plus className="mr-2 h-4 w-4" /> New Workshop
+                  <Button size="sm" onClick={() => navigate('/admin/workshops/new')}>
+                    <Calendar className="mr-2 h-4 w-4" /> New Workshop
+                  </Button>
+                </CardFooter>
+              </Card>
+            </div>
+          </div>
+          
+          <div className="mb-8">
+            <h2 className="text-xl font-semibold mb-4">User & Communication</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <User className="mr-2 h-5 w-5 text-primary" />
+                    About Section
+                  </CardTitle>
+                  <CardDescription>Update your profile information</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">
+                    Edit your biography, experience, equipment details, and post-processing philosophy.
+                  </p>
+                </CardContent>
+                <CardFooter>
+                  <Button size="sm" onClick={() => navigate('/admin/about')}>
+                    Edit Profile
+                  </Button>
+                </CardFooter>
+              </Card>
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Mail className="mr-2 h-5 w-5 text-primary" />
+                    Messages
+                  </CardTitle>
+                  <CardDescription>Manage contact form submissions</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">
+                    View and respond to messages from your contact form and manage newsletter subscribers.
+                  </p>
+                </CardContent>
+                <CardFooter>
+                  <Button size="sm" onClick={() => navigate('/admin/messages')}>
+                    View Messages
+                  </Button>
+                </CardFooter>
+              </Card>
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Users className="mr-2 h-5 w-5 text-primary" />
+                    User Management
+                  </CardTitle>
+                  <CardDescription>Manage user accounts</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">
+                    Manage admin users, workshop participants, and permission levels.
+                  </p>
+                </CardContent>
+                <CardFooter>
+                  <Button size="sm" onClick={() => navigate('/admin/users')}>
+                    Manage Users
                   </Button>
                 </CardFooter>
               </Card>
@@ -115,44 +192,68 @@ const Admin = () => {
           <Separator className="my-8" />
           
           <div>
-            <h2 className="text-xl font-semibold mb-4">Website Settings</h2>
-            <Card>
-              <CardHeader>
-                <CardTitle>General Settings</CardTitle>
-                <CardDescription>Update your website information</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="text-sm font-medium">Homepage Content</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Edit hero section, about text, and contact information.
-                    </p>
-                    <Button className="mt-2" variant="outline" size="sm">
-                      <Layout className="mr-2 h-4 w-4" /> Edit Homepage
-                    </Button>
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-medium">Media Library</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Manage all uploaded images and files in one place.
-                    </p>
-                    <Button className="mt-2" variant="outline" size="sm">
-                      <Upload className="mr-2 h-4 w-4" /> Media Library
-                    </Button>
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-medium">SEO Settings</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Manage SEO metadata, keywords, and site descriptions.
-                    </p>
-                    <Button className="mt-2" variant="outline" size="sm">
-                      <Edit className="mr-2 h-4 w-4" /> SEO Settings
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <h2 className="text-xl font-semibold mb-4">Website Settings & Analytics</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Settings className="mr-2 h-5 w-5 text-primary" />
+                    General Settings
+                  </CardTitle>
+                  <CardDescription>Update your website information</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">
+                    Edit site title, meta data, and contact information. Configure SEO settings.
+                  </p>
+                </CardContent>
+                <CardFooter>
+                  <Button size="sm" onClick={() => navigate('/admin/settings')}>
+                    Edit Settings
+                  </Button>
+                </CardFooter>
+              </Card>
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Palette className="mr-2 h-5 w-5 text-primary" />
+                    Design Customization
+                  </CardTitle>
+                  <CardDescription>Customize your website appearance</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">
+                    Edit layout settings, homepage content, colors, and fonts.
+                  </p>
+                </CardContent>
+                <CardFooter>
+                  <Button size="sm" onClick={() => navigate('/admin/design')}>
+                    Customize Design
+                  </Button>
+                </CardFooter>
+              </Card>
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <BarChart3 className="mr-2 h-5 w-5 text-primary" />
+                    Analytics
+                  </CardTitle>
+                  <CardDescription>View website performance</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">
+                    Track website traffic, popular content, workshop registrations, and user engagement.
+                  </p>
+                </CardContent>
+                <CardFooter>
+                  <Button size="sm" onClick={() => navigate('/admin/analytics')}>
+                    View Analytics
+                  </Button>
+                </CardFooter>
+              </Card>
+            </div>
           </div>
         </div>
       </main>
