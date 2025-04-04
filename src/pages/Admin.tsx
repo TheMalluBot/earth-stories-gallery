@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { ArrowLeft, Edit, Trash, Plus, LogOut } from 'lucide-react';
+import { ArrowLeft, Edit, Trash, Plus, LogOut, PenLine, Image, Upload, Layout } from 'lucide-react';
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -57,15 +57,15 @@ const Admin = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    You have 8 published blog posts. Create, edit, or delete blog content.
+                    Create, edit, or delete blog content. Organize your posts by categories.
                   </p>
                 </CardContent>
                 <CardFooter className="flex justify-between">
-                  <Button size="sm" variant="outline">
-                    <Edit className="mr-2 h-4 w-4" /> Edit Posts
+                  <Button size="sm" variant="outline" onClick={() => navigate('/admin/blog')}>
+                    <Edit className="mr-2 h-4 w-4" /> Manage Posts
                   </Button>
-                  <Button size="sm">
-                    <Plus className="mr-2 h-4 w-4" /> New Post
+                  <Button size="sm" onClick={() => navigate('/admin/blog/new')}>
+                    <PenLine className="mr-2 h-4 w-4" /> New Post
                   </Button>
                 </CardFooter>
               </Card>
@@ -77,15 +77,15 @@ const Admin = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Update your showcase photography collections and categories.
+                    Update your showcase photography collections, add new photos and manage categories.
                   </p>
                 </CardContent>
                 <CardFooter className="flex justify-between">
-                  <Button size="sm" variant="outline">
+                  <Button size="sm" variant="outline" onClick={() => navigate('/admin/portfolio')}>
                     <Edit className="mr-2 h-4 w-4" /> Edit Portfolio
                   </Button>
-                  <Button size="sm">
-                    <Plus className="mr-2 h-4 w-4" /> Add Photos
+                  <Button size="sm" onClick={() => navigate('/admin/portfolio/new')}>
+                    <Image className="mr-2 h-4 w-4" /> Add Photo
                   </Button>
                 </CardFooter>
               </Card>
@@ -124,30 +124,34 @@ const Admin = () => {
               <CardContent>
                 <div className="space-y-4">
                   <div>
-                    <h3 className="text-sm font-medium">Profile Information</h3>
+                    <h3 className="text-sm font-medium">Homepage Content</h3>
                     <p className="text-sm text-muted-foreground">
-                      Update your bio, contact information, and professional details.
+                      Edit hero section, about text, and contact information.
                     </p>
+                    <Button className="mt-2" variant="outline" size="sm">
+                      <Layout className="mr-2 h-4 w-4" /> Edit Homepage
+                    </Button>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-medium">Media Library</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Manage all uploaded images and files in one place.
+                    </p>
+                    <Button className="mt-2" variant="outline" size="sm">
+                      <Upload className="mr-2 h-4 w-4" /> Media Library
+                    </Button>
                   </div>
                   <div>
                     <h3 className="text-sm font-medium">SEO Settings</h3>
                     <p className="text-sm text-muted-foreground">
                       Manage SEO metadata, keywords, and site descriptions.
                     </p>
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-medium">Email Configuration</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Update email templates and notification settings.
-                    </p>
+                    <Button className="mt-2" variant="outline" size="sm">
+                      <Edit className="mr-2 h-4 w-4" /> SEO Settings
+                    </Button>
                   </div>
                 </div>
               </CardContent>
-              <CardFooter>
-                <Button>
-                  Manage Settings
-                </Button>
-              </CardFooter>
             </Card>
           </div>
         </div>
